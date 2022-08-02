@@ -19,13 +19,14 @@
         <CheckBox x:Name="checkbox2" Content="fine tune" HorizontalAlignment="Left" Margin="498,171,0,0" VerticalAlignment="Top" Unchecked="CheckBox_Unchecked" Checked="CheckBox2_Checked"/>
         <Button x:Name="equalize2" Content="equalize" HorizontalAlignment="Left" Margin="630,168,0,0" VerticalAlignment="Top" Width="60" Click="equalize2_Click"/>
         <TextBox x:Name="servernamebox" HorizontalAlignment="Left" Margin="26,37,0,0" TextWrapping="Wrap" Text="192.168.1.244" VerticalAlignment="Top" Width="97"/>
-        <Button Content="connect" HorizontalAlignment="Left" Margin="188,36,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="connect" HorizontalAlignment="Left" Margin="290,362,0,0" VerticalAlignment="Top" Click="Button_Click" Height="42" Width="96" FontWeight="Bold" FontSize="16"/>
         <TextBox x:Name="portbox" HorizontalAlignment="Left" Margin="128,37,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="46"/>
         <TextBlock x:Name="output_textblock" HorizontalAlignment="Left" Margin="70,78,0,0" TextWrapping="Wrap" Text="Not Connected" VerticalAlignment="Top"/>
         <TextBox x:Name="servernamebox2" HorizontalAlignment="Left" Margin="468,37,0,0" TextWrapping="Wrap" Text="192.168.1.244" VerticalAlignment="Top" Width="97"/>
         <TextBox x:Name="portbox2" HorizontalAlignment="Left" Margin="570,37,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="46"/>
         <TextBlock x:Name="output_textblock2" HorizontalAlignment="Left" Margin="512,78,0,0" TextWrapping="Wrap" Text="Not Connected" VerticalAlignment="Top"/>
-        <Button Content="connect" HorizontalAlignment="Left" Margin="637,37,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button Content="disconnect" HorizontalAlignment="Left" Margin="406,362,0,0" VerticalAlignment="Top" Height="42" Width="96" IsDefault="True" FontSize="16" FontWeight="Bold" Click="Button_Click_2"/>
+        <Label x:Name="flag" Content="0" HorizontalAlignment="Left" Margin="784,408,0,0" VerticalAlignment="Top" IsEnabled="False"/>
 
     </Grid>
 </Window>

@@ -36,19 +36,48 @@ namespace WpfApp2
         private void telnet_notify()
 
         {
-            TcpClient tc1 = new TcpClient();
-            TcpClient tc2 = new TcpClient();
-            
-            //NetworkStream netStream2 = tc2.GetStream();
+            //TcpClient tc1 = new TcpClient();
+            //TcpClient tc2 = new TcpClient();
+            NetworkStream netStream1=null;
+            NetworkStream netStream2=null;
+
+
             int port1 = 0;
             string hostname1 = "";
             Dispatcher.Invoke(() => hostname1 = servernamebox.Text);
             Dispatcher.Invoke(() => port1 = Convert.ToInt32(portbox.Text));
-            tc1 = new TcpClient(hostname1, port1);
-            NetworkStream netStream1 = tc1.GetStream();
-            att1 = 2;
-            netStream1 = tc1.GetStream();
-            netStream1.ReadTimeout = 1000;
+            //tc1 = new TcpClient(hostname1, port1);
+            var tc1 = new TcpClient();
+
+            if (!tc1.ConnectAsync(hostname1, port1).Wait(1000))
+            {
+                att1 = 1;
+            }
+            else
+            {
+                att1 = 2;
+                netStream1 = tc1.GetStream();
+                netStream1.ReadTimeout = 1000;
+            }
+
+            
+            int port2 = 0;
+            string hostname2 = "";
+            Dispatcher.Invoke(() => hostname2 = servernamebox2.Text);
+            Dispatcher.Invoke(() => port2 = Convert.ToInt32(portbox2.Text));
+            //tc2 = new TcpClient(hostname2, port2);
+
+            var tc2 = new TcpClient();
+            if (!tc2.ConnectAsync(hostname2, port2).Wait(1000))
+            {
+                att2 = 1;
+            }
+            else
+            {
+                att2 = 2;
+                netStream2 = tc2.GetStream();
+                netStream2.ReadTimeout = 1000;
+            }
 
             //if (att1 == 1) {
             //    int port1 = 0;
@@ -91,33 +120,43 @@ namespace WpfApp2
 
 
             byte[] bytes1 = new byte[tc1.ReceiveBufferSize];
-            //byte[] bytes2 = new byte[tc2.ReceiveBufferSize];
-            
-            
-            while ((tc1.Connected))
-            {
-                try
-                {   
-                    netStream1.Read(bytes1, 0, (int)tc1.ReceiveBufferSize);
-                }
-                catch (Exception) { }
-                try
-                {
-                    //netStream2.Read(bytes2, 0, (int)tc2.ReceiveBufferSize);
-                }
-                catch (Exception) { }
-                string returndata1 = Encoding.ASCII.GetString(bytes1);
-                //string returndata2 = Encoding.ASCII.GetString(bytes2);
-                Trace.WriteLine("test connected");
-                Task.Delay(1000).Wait();
-                Dispatcher.Invoke(() => output_textblock.Text = returndata1);
-                //Dispatcher.Invoke(() => output_textblock2.Text = returndata2);
+            byte[] bytes2 = new byte[tc2.ReceiveBufferSize];
 
+            IAsyncResult asyncResult;
+            while (true)
+            {   if (Dispatcher.Invoke(() => (flag.Content).ToString() == "0")) { break; }
+                
+                if (att1 == 2)
+                {
+                    try
+                    {   
+                        netStream1.Read(bytes1, 0, (int)tc1.ReceiveBufferSize);
+                        string returndata1 = Encoding.ASCII.GetString(bytes1);
+                        Trace.WriteLine("test connected");
+                        Dispatcher.Invoke(() => output_textblock.Text = returndata1);
+                    }
+                    catch (Exception) { Dispatcher.Invoke(() => output_textblock.Text = "no answer"); }
+                }
+
+                if (att2 == 2)
+                {
+                    try
+                    {
+                        netStream2.Read(bytes2, 0, (int)tc2.ReceiveBufferSize);
+                        string returndata2 = Encoding.ASCII.GetString(bytes2);
+                        Trace.WriteLine("test connected");
+                        Dispatcher.Invoke(() => output_textblock2.Text = returndata2);
+
+                    }
+                    catch (Exception) { Dispatcher.Invoke(() => output_textblock2.Text = "no answer"); }
+                }
+                Task.Delay(1000).Wait();
             }
             //att1_value(slider1.Value, tc);
             //att2_value(slider2.Value, tc);
+            Dispatcher.Invoke(() => output_textblock.Text = "not connected");
+            Dispatcher.Invoke(() => output_textblock2.Text = "not connected");
 
-            
         }
 
         private void att1_value(double value, TcpClient tc)
@@ -247,8 +286,10 @@ namespace WpfApp2
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {   
+        {
+            flag.Content = "1";
             att1 = 1;
+            att2 = 2;
             var inner = Task.Factory.StartNew(() =>  // вложенная задача
             {
 
@@ -266,6 +307,13 @@ namespace WpfApp2
                 telnet_notify();
 
             }, TaskCreationOptions.AttachedToParent);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            flag.Content = "0";
+            output_textblock.Text = "not connected";
+            output_textblock2.Text = "not connected";
         }
     }
     
