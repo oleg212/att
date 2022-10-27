@@ -20,15 +20,19 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.IO.Ports;
+
+
 namespace WpfApp2
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    {   //ABOBA
         int att1 = 0;
         int att2 = 0;
+        string[] port;
         public MainWindow()
         {
             InitializeComponent();
@@ -79,53 +83,19 @@ namespace WpfApp2
                 netStream2.ReadTimeout = 1000;
             }
 
-            //if (att1 == 1) {
-            //    int port1 = 0;
-            //    string hostname1 = "";
-            //    Dispatcher.Invoke(() => hostname1 = servernamebox.Text);
-            //    Dispatcher.Invoke(() => port1 = Convert.ToInt32(portbox.Text));
-            //    tc1 = new TcpClient(hostname1, port1);
-            //    att1 = 2;
-            //    netStream1 = tc1.GetStream();
-            //    try
-            //    {
-            //        netStream1 = tc1.GetStream();
-            //        netStream1.ReadTimeout = 1000;
-            //    }
-            //    catch (Exception) { }
-
-            //}
-            //if (att2 == 1)
-            //{
-            //    int port2 = 0;
-            //    string hostname2 = "";
-            //    Dispatcher.Invoke(() => hostname2 = servernamebox2.Text);
-            //    Dispatcher.Invoke(() => port2 = Convert.ToInt32(portbox2.Text));
-            //    tc2 = new TcpClient(hostname2, port2);
-            //    att2 = 2;
-            //    netStream2 = tc2.GetStream();
-            //    try
-            //    {
-            //        netStream2 = tc2.GetStream();
-            //        netStream2.ReadTimeout = 1000;
-            //    }
-            //    catch (Exception) { }
-            //}
-
-
-            //Dispatcher.Invoke(() => output_textblock.Text = GetAnswer(tc));
-
-
-
-
-
+            
             byte[] bytes1 = new byte[tc1.ReceiveBufferSize];
             byte[] bytes2 = new byte[tc2.ReceiveBufferSize];
 
-            IAsyncResult asyncResult;
+            
             while (true)
             {   if (Dispatcher.Invoke(() => (flag.Content).ToString() == "0")) { break; }
+
+
+                string comand = "wv0" + Convert.ToString(Math.Round(slider1.Value, 2)) + "\n";
                 
+                comm_DataSend(comand,com);
+
                 if (att1 == 2)
                 {
                     try
@@ -152,8 +122,8 @@ namespace WpfApp2
                 }
                 Task.Delay(1000).Wait();
             }
-            //att1_value(slider1.Value, tc);
-            //att2_value(slider2.Value, tc);
+            tc1.Close();
+            tc2.Close();
             Dispatcher.Invoke(() => output_textblock.Text = "not connected");
             Dispatcher.Invoke(() => output_textblock2.Text = "not connected");
 
@@ -193,17 +163,9 @@ namespace WpfApp2
         }
 
         private void textbox1_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            try
-            {   
-                
-                slider1.Value= Convert.ToDouble(textbox1.Text);
-            }
-            catch (Exception)
-            {
-
-                
-            }
+        {try
+            {slider1.Value= Convert.ToDouble(textbox1.Text);}
+            catch (Exception){}
         }
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -214,7 +176,6 @@ namespace WpfApp2
         private void CheckBox1_Checked(object sender, RoutedEventArgs e)
         {
             slider1.Value = slider1.Value - (slider1.Value % 0.25);
-
         }
 
         private void slider2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -228,15 +189,8 @@ namespace WpfApp2
         private void textbox2_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
-            {
-
-                slider2.Value = Convert.ToDouble(textbox2.Text);
-            }
-            catch (Exception)
-            {
-
-
-            }
+            {slider2.Value = Convert.ToDouble(textbox2.Text);}
+            catch (Exception){}
         }
 
         private void equalize1_Click(object sender, RoutedEventArgs e)
@@ -287,6 +241,14 @@ namespace WpfApp2
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            disconnect_button.IsEnabled = true;
+            this.com.PortName = port[combox1.SelectedIndex];
+            this.com.BaudRate = 115200;
+            this.com.StopBits = StopBits.One;
+            this.com.Parity = Parity.None;
+            this.com.DataBits = 8;
+            this.com.Open();
+
             flag.Content = "1";
             att1 = 1;
             att2 = 2;
@@ -296,6 +258,7 @@ namespace WpfApp2
                 telnet_notify();
 
             }, TaskCreationOptions.AttachedToParent);
+            connect_button.IsEnabled = false;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -311,9 +274,45 @@ namespace WpfApp2
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            connect_button.IsEnabled = true;
+            com.Close();
+
             flag.Content = "0";
             output_textblock.Text = "not connected";
             output_textblock2.Text = "not connected";
+            disconnect_button.IsEnabled=false;
+
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void combox1_Initialized(object sender, EventArgs e)
+        {
+            port = SerialPort.GetPortNames();
+            combox1.ItemsSource = port;
+        }
+        private SerialPort com = new SerialPort();
+        public void comm_DataSend(string str, SerialPort com)
+        {
+            try
+            {
+                List<byte> byteList = new List<byte>();
+                byte[] byteListIn = new byte[128];
+                str = str.Replace(" ", "");
+                for (int startIndex = 0; startIndex < str.Length; startIndex += 2)
+                    byteList.Add(Convert.ToByte(str.Substring(startIndex, 2), 16));
+
+                com.Write(byteList.ToArray(), 0, byteList.Count);
+
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
     

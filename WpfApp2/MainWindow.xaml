@@ -8,25 +8,31 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="139*"/>
+            <ColumnDefinition Width="626*"/>
+        </Grid.ColumnDefinitions>
 
-        <Slider x:Name="slider1" HorizontalAlignment="Left" Margin="56,217,0,0" VerticalAlignment="Top" Width="263" Height="41" Maximum="30" ValueChanged="slider1_ValueChanged" MouseWheel="slider1_MouseWheel"/>
-        <TextBox x:Name="textbox1" HorizontalAlignment="Left" Margin="128,263,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" TextChanged="textbox1_TextChanged"/>
-        <CheckBox x:Name="checkbox1" Content="fine tune" HorizontalAlignment="Left" Margin="56,171,0,0" VerticalAlignment="Top" Unchecked="CheckBox_Unchecked" Checked="CheckBox1_Checked"/>
-        <CheckBox x:Name="boundcheckbox" Content="bound" HorizontalAlignment="Center" Margin="0,91,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="equalize1" Content="equalize" HorizontalAlignment="Left" Margin="188,168,0,0" VerticalAlignment="Top" Width="60" Click="equalize1_Click"/>
-        <Slider x:Name="slider2" HorizontalAlignment="Left" Margin="498,217,0,0" VerticalAlignment="Top" Width="263" Height="41" Maximum="30" ValueChanged="slider2_ValueChanged" MouseWheel="slider2_MouseWheel"/>
-        <TextBox x:Name="textbox2" HorizontalAlignment="Left" Margin="570,263,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" TextChanged="textbox2_TextChanged"/>
-        <CheckBox x:Name="checkbox2" Content="fine tune" HorizontalAlignment="Left" Margin="498,171,0,0" VerticalAlignment="Top" Unchecked="CheckBox_Unchecked" Checked="CheckBox2_Checked"/>
-        <Button x:Name="equalize2" Content="equalize" HorizontalAlignment="Left" Margin="630,168,0,0" VerticalAlignment="Top" Width="60" Click="equalize2_Click"/>
-        <TextBox x:Name="servernamebox" HorizontalAlignment="Left" Margin="26,37,0,0" TextWrapping="Wrap" Text="192.168.1.244" VerticalAlignment="Top" Width="97"/>
-        <Button Content="connect" HorizontalAlignment="Left" Margin="290,362,0,0" VerticalAlignment="Top" Click="Button_Click" Height="42" Width="96" FontWeight="Bold" FontSize="16"/>
-        <TextBox x:Name="portbox" HorizontalAlignment="Left" Margin="128,37,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="46"/>
-        <TextBlock x:Name="output_textblock" HorizontalAlignment="Left" Margin="70,78,0,0" TextWrapping="Wrap" Text="Not Connected" VerticalAlignment="Top"/>
-        <TextBox x:Name="servernamebox2" HorizontalAlignment="Left" Margin="468,37,0,0" TextWrapping="Wrap" Text="192.168.1.244" VerticalAlignment="Top" Width="97"/>
-        <TextBox x:Name="portbox2" HorizontalAlignment="Left" Margin="570,37,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="46"/>
-        <TextBlock x:Name="output_textblock2" HorizontalAlignment="Left" Margin="512,78,0,0" TextWrapping="Wrap" Text="Not Connected" VerticalAlignment="Top"/>
-        <Button Content="disconnect" HorizontalAlignment="Left" Margin="406,362,0,0" VerticalAlignment="Top" Height="42" Width="96" IsDefault="True" FontSize="16" FontWeight="Bold" Click="Button_Click_2"/>
-        <Label x:Name="flag" Content="0" HorizontalAlignment="Left" Margin="784,408,0,0" VerticalAlignment="Top" IsEnabled="False"/>
+        <Slider x:Name="slider1" HorizontalAlignment="Left" Margin="21,217,0,0" VerticalAlignment="Top" Width="263" Height="41" Maximum="30" ValueChanged="slider1_ValueChanged" MouseWheel="slider1_MouseWheel" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <TextBox x:Name="textbox1" HorizontalAlignment="Left" Margin="93,263,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" TextChanged="textbox1_TextChanged" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <CheckBox x:Name="checkbox1" Content="fine tune" HorizontalAlignment="Left" Margin="21,171,0,0" VerticalAlignment="Top" Unchecked="CheckBox_Unchecked" Checked="CheckBox1_Checked" Grid.Column="1"/>
+        <CheckBox x:Name="boundcheckbox" Content="bound" HorizontalAlignment="Left" Margin="199,91,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+        <Button x:Name="equalize1" Content="equalize" HorizontalAlignment="Left" Margin="14,168,0,0" VerticalAlignment="Top" Width="60" Click="equalize1_Click" Grid.Column="2"/>
+        <Slider x:Name="slider2" HorizontalAlignment="Left" Margin="324,217,0,0" VerticalAlignment="Top" Width="263" Height="41" Maximum="30" ValueChanged="slider2_ValueChanged" MouseWheel="slider2_MouseWheel" Grid.Column="2"/>
+        <TextBox x:Name="textbox2" HorizontalAlignment="Left" Margin="396,263,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" TextChanged="textbox2_TextChanged" Grid.Column="2"/>
+        <CheckBox x:Name="checkbox2" Content="fine tune" HorizontalAlignment="Left" Margin="324,171,0,0" VerticalAlignment="Top" Unchecked="CheckBox_Unchecked" Checked="CheckBox2_Checked" Grid.Column="2"/>
+        <Button x:Name="equalize2" Content="equalize" HorizontalAlignment="Left" Margin="456,168,0,0" VerticalAlignment="Top" Width="60" Click="equalize2_Click" Grid.Column="2"/>
+        <TextBox x:Name="servernamebox" HorizontalAlignment="Left" Margin="26,37,0,0" TextWrapping="Wrap" Text="192.168.1.244" VerticalAlignment="Top" Width="97" Grid.ColumnSpan="2"/>
+        <Button x:Name="connect_button" Content="connect" HorizontalAlignment="Left" Margin="116,362,0,0" VerticalAlignment="Top" Click="Button_Click" Height="42" Width="96" FontWeight="Bold" FontSize="16" Grid.Column="2"/>
+        <TextBox x:Name="portbox" HorizontalAlignment="Left" Margin="93,37,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="46" Grid.Column="1"/>
+        <TextBlock x:Name="output_textblock" HorizontalAlignment="Left" Margin="35,78,0,0" TextWrapping="Wrap" Text="Not Connected" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBox x:Name="servernamebox2" HorizontalAlignment="Left" Margin="294,37,0,0" TextWrapping="Wrap" Text="192.168.1.244" VerticalAlignment="Top" Width="97" Grid.Column="2"/>
+        <TextBox x:Name="portbox2" HorizontalAlignment="Left" Margin="396,37,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="46" Grid.Column="2"/>
+        <TextBlock x:Name="output_textblock2" HorizontalAlignment="Left" Margin="338,78,0,0" TextWrapping="Wrap" Text="Not Connected" VerticalAlignment="Top" Grid.Column="2"/>
+        <Button x:Name="disconnect_button" Content="disconnect" HorizontalAlignment="Left" Margin="232,362,0,0" VerticalAlignment="Top" Height="42" Width="96" IsDefault="True" FontSize="16" FontWeight="Bold" Click="Button_Click_2" Grid.Column="2"/>
+        <Label x:Name="flag" Content="0" HorizontalAlignment="Left" Margin="610,408,0,0" VerticalAlignment="Top" IsEnabled="False" Grid.Column="2"/>
+        <ComboBox x:Name="combox1" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top" Width="97" SelectionChanged="ComboBox_SelectionChanged" Grid.ColumnSpan="2" Initialized="combox1_Initialized"/>
 
     </Grid>
 </Window>
