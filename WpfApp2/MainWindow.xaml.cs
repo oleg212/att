@@ -29,7 +29,7 @@ namespace WpfApp2
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {   //ABOBA
+    {   
         int att1 = 0;
         int att2 = 0;
         string[] port;
@@ -92,9 +92,22 @@ namespace WpfApp2
             {   if (Dispatcher.Invoke(() => (flag.Content).ToString() == "0")) { break; }
 
 
-                string comand = "wv0" + Convert.ToString(Math.Round(slider1.Value, 2)) + "\n";
+                string comand="";
+                double value=0;
+                Dispatcher.Invoke(() => value = slider1.Value);
+                value = Math.Round(value, 2);
+                comand=Convert.ToString(value);
+                if (value < 10) { comand = "0" + comand; }
+                comand=comand.Replace(",", "");
+                if (comand.Length ==3) { comand += "0"; }
+                if (comand.Length == 2) { comand += "00"; }
+                comand="wv0"+comand+"\n";
                 
-                comm_DataSend(comand,com);
+                Dispatcher.Invoke(() => output_com.Text = comand);
+                com.WriteLine(comand);
+                string message = com.ReadLine();
+                Dispatcher.Invoke(() => output_com.Text = message);
+                //comm_DataSend(comand,com);
 
                 if (att1 == 2)
                 {
@@ -242,6 +255,7 @@ namespace WpfApp2
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             disconnect_button.IsEnabled = true;
+            flag.Content = "1";
             this.com.PortName = port[combox1.SelectedIndex];
             this.com.BaudRate = 115200;
             this.com.StopBits = StopBits.One;
@@ -249,7 +263,7 @@ namespace WpfApp2
             this.com.DataBits = 8;
             this.com.Open();
 
-            flag.Content = "1";
+            
             att1 = 1;
             att2 = 2;
             var inner = Task.Factory.StartNew(() =>  // вложенная задача

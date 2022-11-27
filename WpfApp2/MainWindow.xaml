@@ -31,8 +31,9 @@
         <TextBox x:Name="portbox2" HorizontalAlignment="Left" Margin="396,37,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="46" Grid.Column="2"/>
         <TextBlock x:Name="output_textblock2" HorizontalAlignment="Left" Margin="338,78,0,0" TextWrapping="Wrap" Text="Not Connected" VerticalAlignment="Top" Grid.Column="2"/>
         <Button x:Name="disconnect_button" Content="disconnect" HorizontalAlignment="Left" Margin="232,362,0,0" VerticalAlignment="Top" Height="42" Width="96" IsDefault="True" FontSize="16" FontWeight="Bold" Click="Button_Click_2" Grid.Column="2"/>
-        <Label x:Name="flag" Content="0" HorizontalAlignment="Left" Margin="610,408,0,0" VerticalAlignment="Top" IsEnabled="False" Grid.Column="2"/>
+        <Label x:Name="flag" Content="0" HorizontalAlignment="Left" Margin="610,408,0,0" VerticalAlignment="Top" Grid.Column="2"/>
         <ComboBox x:Name="combox1" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top" Width="97" SelectionChanged="ComboBox_SelectionChanged" Grid.ColumnSpan="2" Initialized="combox1_Initialized"/>
+        <TextBlock x:Name="output_com" HorizontalAlignment="Left" Margin="112,13,0,0" TextWrapping="Wrap" Text="empty" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
